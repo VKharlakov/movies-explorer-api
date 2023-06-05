@@ -6,7 +6,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const { errors } = require('celebrate');
 
-const routes = require('./routes/index');
+const router = require('./routes/index');
 const { handleAllErrors } = require('./util/utilities');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
@@ -36,7 +36,7 @@ app.use(requestLogger);
 app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
-app.use('/api', routes);
+app.use(router);
 app.use(errorLogger);
 app.use(errors());
 app.use(handleAllErrors);
