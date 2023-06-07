@@ -12,15 +12,17 @@ function handleAllErrors(err, req, res, next) {
   next();
 }
 
-//  Обработчик неправильного адреса
-const NotFoundError = require('../errors/NotFound');
-const { RESOURCE_NOT_FOUND_MESSAGE } = require('./constants');
+//  Модуль ограничивающий количество запросов
+const rateLimit = require('express-rate-limit');
 
-function getInvalidURL(req, res, next) {
-  next(new NotFoundError(RESOURCE_NOT_FOUND_MESSAGE));
-}
+const rateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 module.exports = {
   handleAllErrors,
-  getInvalidURL,
+  rateLimiter,
 };

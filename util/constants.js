@@ -22,6 +22,8 @@ const SUCCESSFUL_LOGOUT_MESSAGE = 'Вы вышли из системы';
 const JWT_TOKEN_EXPIRES = '7d';
 const COOKIE_MAX_AGE = 3600000 * 24 * 7;
 
+const urlRegEx = /^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-/])*)?/;
+
 module.exports = {
   GENERAL_ERROR,
   GENERAL_ERROR_MESSAGE,
@@ -44,4 +46,5 @@ module.exports = {
   SUCCESSFUL_LOGOUT_MESSAGE,
   JWT_TOKEN_EXPIRES,
   COOKIE_MAX_AGE,
+  urlRegEx,
 };
