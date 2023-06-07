@@ -50,9 +50,7 @@ function createMovie(req, res, next) {
     owner: req.user._id,
   })
     .then((movie) => {
-      Movie.findById(movie._id).then((mve) => {
-        res.status(STATUS_OK_CREATED).send(mve);
-      });
+      res.status(STATUS_OK_CREATED).send(movie);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') next(new BadRequestError(BAD_REQUEST_MESSAGE));
@@ -70,14 +68,13 @@ function deleteMovie(req, res, next) {
     .then((movie) => {
       if (req.user._id === movie.owner._id.toString()) {
         Movie.findByIdAndRemove(movieId)
-          .then((movie2) => res.status(STATUS_OK).send(movie2))
-          .catch((err) => {
-            if (err.name === 'CastError') next(new BadRequestError(BAD_REQUEST_MESSAGE));
-            else next(err);
-          });
-      } else next(new ForbiddenError(DELETION_NOT_AUTHORIZED_MESSAGE));
+          .then((movie2) => res.status(STATUS_OK).send(movie2));
+      } throw new ForbiddenError(DELETION_NOT_AUTHORIZED_MESSAGE);
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError') next(new BadRequestError(BAD_REQUEST_MESSAGE));
+      else next(err);
+    });
 }
 
 module.exports = {

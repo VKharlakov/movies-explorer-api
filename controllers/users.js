@@ -73,7 +73,6 @@ function getUserById(req, res, next) {
 
 function createUser(req, res, next) {
   const { email, password, name } = req.body;
-  if (!password || req.cookies.jwt) throw new BadRequestError(BAD_REQUEST_MESSAGE);
   bcrypt
     .hash(password, 10)
     .then((hash) => {
@@ -113,7 +112,7 @@ function updateUser(req, res, next) {
     })
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err.name === 'CastError' || err.name === 'ValidationError') next(new BadRequestError(BAD_REQUEST_MESSAGE));
+      if (err.name === 'ValidationError') next(new BadRequestError(BAD_REQUEST_MESSAGE));
       else next(err);
     });
 }
