@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 
-const NotFoundError = require('../errors/NotFound');
 const BadRequestError = require('../errors/BadRequest');
 const UserAlreadyExistsError = require('../errors/UserAlreadyExists');
 
@@ -14,7 +13,6 @@ const {
   SUCCESSFUL_LOGOUT_MESSAGE,
   ALREADY_EXISTS_MESSAGE,
   BAD_REQUEST_MESSAGE,
-  USER_NOT_FOUND_MESSAGE,
   JWT_TOKEN_EXPIRES,
   COOKIE_MAX_AGE,
 } = require('../util/constants');
@@ -61,9 +59,6 @@ function logout(req, res, next) {
 function getUserById(req, res, next) {
   const userId = req.user._id;
   User.findById(userId)
-    .orFail(() => {
-      throw new NotFoundError(USER_NOT_FOUND_MESSAGE);
-    })
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'CastError') next(new BadRequestError(BAD_REQUEST_MESSAGE));
@@ -107,9 +102,6 @@ function updateUser(req, res, next) {
       runValidators: true,
     },
   )
-    .orFail(() => {
-      throw new NotFoundError(USER_NOT_FOUND_MESSAGE);
-    })
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') next(new BadRequestError(BAD_REQUEST_MESSAGE));
