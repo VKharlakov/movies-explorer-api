@@ -5,14 +5,13 @@ const NotAuthorizedError = require('../errors/NotAuthorized');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports = (req, res, next) => {
-  const token = req.cookies.jwt;
-
-  if (!token) {
+  if (!req.cookies) {
     next(new NotAuthorizedError('Необходима авторизация'));
     return;
   }
-
+  const token = req.headers.authorization.replace('Bearer ', '');
   let payload;
+
   try {
     payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
   } catch (err) {

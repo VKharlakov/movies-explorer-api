@@ -2,6 +2,7 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+//  const NotFoundError = require('../errors/NotFound');
 
 const BadRequestError = require('../errors/BadRequest');
 const UserAlreadyExistsError = require('../errors/UserAlreadyExists');
@@ -28,13 +29,6 @@ function login(req, res, next) {
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         { expiresIn: JWT_TOKEN_EXPIRES },
       );
-      // res
-      //   .cookie('jwt', token, {
-      //     maxAge: COOKIE_MAX_AGE,
-      //     httpOnly: true,
-      //     sameSite: 'None',
-      //     secure: true,
-      //   })
       res.send({ token });
     })
     .catch((err) => {

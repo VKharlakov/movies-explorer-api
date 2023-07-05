@@ -5,6 +5,6 @@ const { createMovieValidation, deleteMovieValidation } = require('../util/valida
 
 router.get('/', getMovies);
 router.post('/', celebrate(createMovieValidation), createMovie);
-router.delete('/:movieId', celebrate(deleteMovieValidation), deleteMovie);
+router.delete('/:_id', celebrate(deleteMovieValidation), deleteMovie);
 
 module.exports = router;

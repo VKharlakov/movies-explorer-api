@@ -59,17 +59,15 @@ function createMovie(req, res, next) {
 }
 
 function deleteMovie(req, res, next) {
-  const { movieId } = req.params;
-
-  Movie.findOne({ _id: movieId })
+  Movie.findOne({ _id: req.params._id })
     .orFail(() => {
       throw new NotFoundError(CARD_NOT_FOUND_MESSAGE);
     })
     .then((movie) => {
       if (req.user._id === movie.owner._id.toString()) {
-        Movie.findByIdAndRemove(movieId)
+        Movie.findByIdAndRemove(req.params._id)
           .then((movie2) => res.status(STATUS_OK).send(movie2));
-      } throw new ForbiddenError(DELETION_NOT_AUTHORIZED_MESSAGE);
+      } else { throw new ForbiddenError(DELETION_NOT_AUTHORIZED_MESSAGE); }
     })
     .catch((err) => {
       if (err.name === 'CastError') next(new BadRequestError(BAD_REQUEST_MESSAGE));
