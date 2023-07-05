@@ -2,6 +2,7 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+//  const NotFoundError = require('../errors/NotFound');
 
 const BadRequestError = require('../errors/BadRequest');
 const UserAlreadyExistsError = require('../errors/UserAlreadyExists');
@@ -9,12 +10,12 @@ const UserAlreadyExistsError = require('../errors/UserAlreadyExists');
 const {
   STATUS_OK_CREATED,
   STATUS_OK,
-  SUCCESSFUL_AUTHORIZATION_MESSAGE,
+  // SUCCESSFUL_AUTHORIZATION_MESSAGE,
   SUCCESSFUL_LOGOUT_MESSAGE,
   ALREADY_EXISTS_MESSAGE,
   BAD_REQUEST_MESSAGE,
   JWT_TOKEN_EXPIRES,
-  COOKIE_MAX_AGE,
+  // COOKIE_MAX_AGE,
 } = require('../util/constants');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
@@ -28,17 +29,11 @@ function login(req, res, next) {
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         { expiresIn: JWT_TOKEN_EXPIRES },
       );
-      res
-        .cookie('jwt', token, {
-          maxAge: COOKIE_MAX_AGE,
-          httpOnly: true,
-          sameSite: 'None',
-          secure: true,
-        })
-        .status(STATUS_OK)
-        .send({ message: SUCCESSFUL_AUTHORIZATION_MESSAGE });
+      res.send({ token });
     })
-    .catch(next);
+    .catch((err) => {
+      next(err);
+    });
 }
 
 function logout(req, res, next) {
