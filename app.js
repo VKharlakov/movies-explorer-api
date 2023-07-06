@@ -27,6 +27,8 @@ const options = {
     'http://praktikum.tk',
     'http://bitfilms.kharlakov.api.nomoredomains.rocks',
     'https://bitfilms.kharlakov.api.nomoredomains.rocks',
+    'https://bitfilms.kharlakov.nomoreparties.sbs',
+    'http://bitfilms.kharlakov.nomoreparties.sbs',
   ],
   credentials: true,
 };
