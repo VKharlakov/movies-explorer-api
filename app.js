@@ -10,7 +10,7 @@ const router = require('./routes/index');
 const { handleAllErrors, rateLimiter } = require('./util/utilities');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 4000, MONGODB_URI = 'mongodb://127.0.0.1/bitfilmsdb' } = process.env;
+const { PORT = 3000, MONGODB_URI = 'mongodb://127.0.0.1/bitfilmsdb' } = process.env;
 
 const app = express();
 
@@ -27,6 +27,8 @@ const options = {
     'http://praktikum.tk',
     'http://bitfilms.kharlakov.api.nomoredomains.rocks',
     'https://bitfilms.kharlakov.api.nomoredomains.rocks',
+    'https://bitfilms.kharlakov.nomoreparties.sbs',
+    'http://bitfilms.kharlakov.nomoreparties.sbs',
   ],
   credentials: true,
 };
