@@ -99,8 +99,11 @@ function updateUser(req, res, next) {
   )
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err.name === 'ValidationError') next(new BadRequestError(BAD_REQUEST_MESSAGE));
-      else next(err);
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError(BAD_REQUEST_MESSAGE));
+      } else if (err.code === 11000) {
+        next(new UserAlreadyExistsError(ALREADY_EXISTS_MESSAGE));
+      } else next(err);
     });
 }
 
